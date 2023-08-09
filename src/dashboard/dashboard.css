@@ -1,0 +1,13 @@
+.main{
+    min-height:1200px;
+    width: 100%;
+
+
+}
+
+.searchItem:hover{
+    background-color: rgb(238, 238, 238);
+    font-weight: 600;
+    
+
+}

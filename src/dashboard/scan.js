@@ -1,0 +1,5 @@
+const scan = [
+    "Abdominal X-ray", "Chest X-ray", "Bone X-ray", "Spine X-ray", "Dental X-ray", "Skull X-ray", "Joint X-ray", "Mammography", "Fluoroscopy", "Barium swallow X-ray", "Barium enema X-ray", "CT scan", "MRI scan", "PET scan", "DEXA scan", "Angiography", "Arthrogram", "Myelogram", "Intravenous pyelogram (IVP)", "Ultrasound imaging", "Abdominal ultrasound", "Pelvic ultrasound", "Transvaginal ultrasound", "Transrectal ultrasound", "Thyroid ultrasound", "Breast ultrasound", "Musculoskeletal ultrasound", "Doppler ultrasound", "Echocardiogram", "Fetal ultrasound", "Obstetric ultrasound", "Neonatal ultrasound", "Renal ultrasound", "Liver ultrasound", "Gallbladder ultrasound", "Pancreas ultrasound", "Spleen ultrasound", "Vascular ultrasound", "Carotid ultrasound", "Testicular ultrasound", "Ovarian ultrasound", "Prostate ultrasound", "Pediatric ultrasound"
+];
+
+export default scan;

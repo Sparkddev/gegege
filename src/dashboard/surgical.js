@@ -1,0 +1,5 @@
+const surgical = [
+    "Appendectomy", "Cholecystectomy", "Hernia repair", "Thyroidectomy", "Colectomy", "Gastrectomy", "Mastectomy", "Exploratory laparotomy", "Total joint replacement", "Spinal fusion", "Fracture fixation", "Arthroscopy", "ACL reconstruction", "Carpal tunnel release", "Coronary artery bypass graft", "Heart valve repair/replacement", "Aneurysm repair", "Pacemaker/defibrillator implantation", "Atrial septal defect closure", "Craniotomy", "Spinal fusion", "Discectomy", "Cerebral aneurysm clipping/coiling", "Brain tumor removal", "Deep brain stimulation", "Rhinoplasty", "Breast augmentation/reduction", "Liposuction", "Facelift", "Burn reconstruction", "Cleft lip and palate repair", "Prostatectomy", "Nephrectomy", "Cystectomy", "Kidney stone removal", "Vasectomy", "Hysterectomy", "Oophorectomy", "Cervical conization", "Tubal ligation", "Cataract surgery", "LASIK", "Retinal detachment repair", "Glaucoma surgery", "Lobectomy", "Pneumonectomy", "Thoracotomy", "Angioplasty and stenting", "Aortic aneurysm repair", "Endarterectomy"
+];
+
+export default surgical;
