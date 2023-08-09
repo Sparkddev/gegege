@@ -11,6 +11,7 @@ import medication from './medication';
 import db from '../firebase';
 import { doc, setDoc } from "firebase/firestore"; 
 import { async } from '@firebase/util';
+import axios from 'axios';
 
 function Dashboard(){
 
@@ -30,6 +31,10 @@ function Dashboard(){
 
     const currentTimestamp = moment().format('YYYY-MM-DD HH:mm:ss');
 
+    const currentMonth = moment().format('MMMM');
+
+    const currentYear = moment().format('YYYY');
+
     // Vital Signs
 
     const[temperature,setTemperature] = useState("");
@@ -37,6 +42,8 @@ function Dashboard(){
     const[bloodpressure,setBloodPressure] = useState("");
     const[weight,setWeight] = useState("");
     const[oxygen_saturation, setOxygenSaturation] = useState("");
+
+    const[hospital_code,setHospitalCode] = useState("");
 
     // diagnosis
 
@@ -147,6 +154,11 @@ function Dashboard(){
         if(hospital == null){
             navigate('/');
         }
+        else{
+            setHospitalCode(hospital);
+        }
+
+        
 
   
 
@@ -235,10 +247,58 @@ async function addToFireStore(e){
 
             refcode:currentTimestamp,
             date:moment(new Date()).format('dddd, MMMM DD, YYYY'),
+            month:currentMonth,
+            year:currentYear,
+            
+
+            // hospitalcode
+
+            hospital_code:hospital_code,
 
           });
 
           console.log("Record Added Successfully");
+
+          axios.post(`https://script.google.com/macros/s/AKfycbzxNB47VJow_PgZLsxsZAYEewX0Iz1TJrlbzJeg0ZsSDNj6TXGpsnJsO2EGVPnyTPNI/exec`,{
+                        
+            //request body here to complete appointment process
+        
+            Firstname:first_name,
+            Lastname:last_name,
+            Gender:mygender,
+            Dob:mydob,
+            Card_Number:mycard,
+            Date_of_admission:dateofadmission,
+            Temperature:temp,
+            Heartrate:heart,
+            BloodPressure:blood,
+            Weight:weigh,
+            Oxygen_Saturation:oxygen,
+            Diagnosis:diagnosis,
+            Laboratory_Test:lab,
+            Surgeries:surgery,
+            Medications:med,
+            Outcome:outcomes,
+            Discharged_Date:discharged,
+            Ref_Code:currentTimestamp,
+            Date:moment(new Date()).format('dddd, MMMM DD, YYYY'),
+            Month:currentMonth,
+            Year:currentYear,
+            Hosptial_Code:hospital_code,
+            sheet:currentMonth
+
+        
+
+            }).then(response => {
+                console.log(response)
+                // hideLoader();
+                
+
+     
+            }).catch(e => {
+                console.error("Error adding document: ", e);
+            })
+
 
          
         
