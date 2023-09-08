@@ -13,6 +13,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { async } from '@firebase/util';
 import axios from 'axios';
 
+
 function Dashboard(){
 
     // Form data here
@@ -259,7 +260,7 @@ async function addToFireStore(e){
 
           console.log("Record Added Successfully");
 
-          await axios.get(`${process.env.GOOGLE_APPSCRIPT_URL}exec?Firstname=${first_name}&Lastname=${last_name}&Gender=${mygender}&Dob=${mydob}&Card_Number=${mycard}&Date_of_admission=${dateofadmission}&Temperature=${temp}&Heartrate=${heart}&Blood_pressure=${blood}&Weight=${weigh}&Oxygen_Saturation=${oxygen}&Diagnosis=${diagnosis.name}&Laboratory_Test=${lab}&Surgeries=${surgery}&Medications=${med}&Outcome=${outcomes}&Discharged_Date=${discharged}&Ref_Code=${currentTimestamp}&Date=${moment(new Date()).format('dddd, MMMM DD, YYYY')}&Month=${currentMonth}&Year=${currentYear}&Hosptial_Code=${hospital_code}&sheet=${currentMonth}`).then(response => {
+          await axios.get(`https://script.google.com/macros/s/AKfycbylkXnmyeCEdPHJRtr0tyl3vt_0Vd5IxWhUxHcd1vNR1hpYOemam8_JrpeHVxgVJhdBGA/exec?Firstname=${first_name}&Lastname=${last_name}&Gender=${mygender}&Dob=${mydob}&Card_Number=${mycard}&Date_of_admission=${dateofadmission}&Temperature=${temp}&Heartrate=${heart}&Blood_pressure=${blood}&Weight=${weigh}&Oxygen_Saturation=${oxygen}&Diagnosis=${diagnosis.name}&Laboratory_Test=${lab}&Surgeries=${surgery}&Medications=${med}&Outcome=${outcomes}&Discharged_Date=${discharged}&Ref_Code=${currentTimestamp}&Date=${moment(new Date()).format('dddd, MMMM DD, YYYY')}&Month=${currentMonth}&Year=${currentYear}&Hosptial_Code=${hospital_code}&sheet=${currentMonth}`).then(response => {
                 console.log(response)
                 // hideLoader();
                 
