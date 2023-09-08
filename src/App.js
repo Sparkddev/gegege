@@ -9,6 +9,8 @@ import {
 
 import Login from './auth/login';
 import Dashboard from './dashboard/dashboard';
+import Today from './dashboard/today';
+import AllRecords from './dashboard/all-record';
 
 function App() {
   return (
@@ -17,6 +19,11 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />}/>
       <Route path="/dashboard" element={<Dashboard/>} />
+
+      <Route path="/today" element={<Today/>} />
+
+      <Route path="/all-records" element={<AllRecords/>} />
+
       
         
     </Routes>

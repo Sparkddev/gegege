@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './dashboard.css';
 import edo from '../auth/edo.png';
 import moment from 'moment';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import diagnoses from './diagnosis';
 import laboratory from './laboratory';
 import surgical from './surgical';
@@ -259,37 +259,7 @@ async function addToFireStore(e){
 
           console.log("Record Added Successfully");
 
-          axios.post(`https://script.google.com/macros/s/AKfycbzxNB47VJow_PgZLsxsZAYEewX0Iz1TJrlbzJeg0ZsSDNj6TXGpsnJsO2EGVPnyTPNI/exec`,{
-                        
-            //request body here to complete appointment process
-        
-            Firstname:first_name,
-            Lastname:last_name,
-            Gender:mygender,
-            Dob:mydob,
-            Card_Number:mycard,
-            Date_of_admission:dateofadmission,
-            Temperature:temp,
-            Heartrate:heart,
-            BloodPressure:blood,
-            Weight:weigh,
-            Oxygen_Saturation:oxygen,
-            Diagnosis:diagnosis,
-            Laboratory_Test:lab,
-            Surgeries:surgery,
-            Medications:med,
-            Outcome:outcomes,
-            Discharged_Date:discharged,
-            Ref_Code:currentTimestamp,
-            Date:moment(new Date()).format('dddd, MMMM DD, YYYY'),
-            Month:currentMonth,
-            Year:currentYear,
-            Hosptial_Code:hospital_code,
-            sheet:currentMonth
-
-        
-
-            }).then(response => {
+          await axios.get(`${process.env.GOOGLE_APPSCRIPT_URL}exec?Firstname=${first_name}&Lastname=${last_name}&Gender=${mygender}&Dob=${mydob}&Card_Number=${mycard}&Date_of_admission=${dateofadmission}&Temperature=${temp}&Heartrate=${heart}&Blood_pressure=${blood}&Weight=${weigh}&Oxygen_Saturation=${oxygen}&Diagnosis=${diagnosis.name}&Laboratory_Test=${lab}&Surgeries=${surgery}&Medications=${med}&Outcome=${outcomes}&Discharged_Date=${discharged}&Ref_Code=${currentTimestamp}&Date=${moment(new Date()).format('dddd, MMMM DD, YYYY')}&Month=${currentMonth}&Year=${currentYear}&Hosptial_Code=${hospital_code}&sheet=${currentMonth}`).then(response => {
                 console.log(response)
                 // hideLoader();
                 
@@ -329,6 +299,34 @@ async function addToFireStore(e){
                         height:"115px",
                         borderRadius:"100%",
                     }} />
+
+                    <br></br>
+
+                    <br></br>
+
+
+                
+                        <Link style={{
+                            textDecoration:"none",
+                        }} to={'/today'}>
+                        <p className='font-weight-bold alert alert-success text-success font-weight-bold py-1 mx-2 my-2'>Today's Record</p>
+                        </Link>
+
+                            <br/>
+                        
+                        <Link style={{
+                            textDecoration:"none",
+                        }} to={'/all-record'}>
+                        <p className='font-weight-bold py-1 mx-2 my-2 hoverme rounded'>All Records</p>
+                        </Link>
+
+                 
+
+               
+
+       
+
+
 
                     </div>
 
@@ -722,6 +720,9 @@ async function addToFireStore(e){
                                             setScanList(updatedMedication);
                                         }} href='' className='symptomscancel text-light px-2 font-weight-bold'>x</a></p>
                                 ))}
+
+                               
+
 
 
 
