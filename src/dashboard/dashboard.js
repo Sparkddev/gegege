@@ -265,6 +265,7 @@ async function addToFireStore(e){
                 // hideLoader();
                 
 
+
      
             }).catch(e => {
                 console.error("Error adding document: ", e);
@@ -283,6 +284,15 @@ async function addToFireStore(e){
     
 }
 
+
+function handleLogout(){
+    var hospital = localStorage.getItem("hospital");
+
+    if(hospital != null){
+        localStorage.removeItem('hospital');
+        navigate('/');
+    }
+}
 
 
     return (
@@ -307,19 +317,29 @@ async function addToFireStore(e){
 
 
                 
-                        <Link style={{
+                        {/* <Link style={{
                             textDecoration:"none",
                         }} to={'/today'}>
                         <p className='font-weight-bold alert alert-success text-success font-weight-bold py-1 mx-2 my-2'>Today's Record</p>
+                        </Link> */}
+
+
+                        {/* <Link style={{
+                            textDecoration:"none",
+                        }} to={'/today'}>
+                        <p className='font-weight-bold  font-weight-bold py-1 mx-2 my-2'>Today's Record</p>
                         </Link>
 
-                            <br/>
+                            <br/> */}
                         
                         <Link style={{
                             textDecoration:"none",
                         }} to={'/all-record'}>
-                        <p className='font-weight-bold py-1 mx-2 my-2 hoverme rounded'>All Records</p>
+                        <p className='font-weight-bold py-1 mx-2 my-2 hoverme rounded'>View patients record</p>
                         </Link>
+
+                        <br/>
+                        <button onClick={handleLogout} className='btn btn-danger text-light font-weight-bold'>Logout</button>
 
                  
 
