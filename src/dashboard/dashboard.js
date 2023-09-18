@@ -331,11 +331,17 @@ function handleLogout(){
                         </Link>
 
                             <br/> */}
+
+<Link style={{
+                            textDecoration:"none",
+                        }} to={'/dashboard'}>
+                        <p className='font-weight-bold py-1 mx-2 my-3 activelink rounded'>Dashboard</p>
+                        </Link>
                         
                         <Link style={{
                             textDecoration:"none",
-                        }} to={'/all-record'}>
-                        <p className='font-weight-bold py-1 mx-2 my-2 hoverme rounded'>View patients record</p>
+                        }} to={'/records'}>
+                        <p className='font-weight-bold py-1 mx-2 my-3 hoverme rounded'>View Records</p>
                         </Link>
 
                         <br/>
