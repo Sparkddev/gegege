@@ -14,29 +14,26 @@ import { async } from '@firebase/util';
 import axios from 'axios';
 
 
-function Dashboard(){
+function RecordEdit(){
+       // Personal information
+       const[firstname , setFirstName] = useState("");
+       const[lastname, setLastName] = useState("");
+       const[gender, setGender] = useState("");
+       const[card_number, setCardNumber] = useState("");
+       const[dob, setDob] = useState("");
+       const[date_of_admission, setDateOfAdmission] = useState("");
+   
+       const[outcome,setOutcome] = useState("");
+   
+       const[discharged_date, setDisChargedDate] = useState("");
+   
+       const currentTimestamp = moment().format('YYYY-MM-DD HH:mm:ss');
+   
+       const currentMonth = moment().format('MMMM');
+   
+       const currentYear = moment().format('YYYY');
 
-    // Form data here
-
-    // Personal information
-    const[firstname , setFirstName] = useState("");
-    const[lastname, setLastName] = useState("");
-    const[gender, setGender] = useState("");
-    const[card_number, setCardNumber] = useState("");
-    const[dob, setDob] = useState("");
-    const[date_of_admission, setDateOfAdmission] = useState("");
-
-    const[outcome,setOutcome] = useState("");
-
-    const[discharged_date, setDisChargedDate] = useState("");
-
-    const currentTimestamp = moment().format('YYYY-MM-DD HH:mm:ss');
-
-    const currentMonth = moment().format('MMMM');
-
-    const currentYear = moment().format('YYYY');
-
-    // Vital Signs
+        // Vital Signs
 
     const[temperature,setTemperature] = useState("");
     const[heartrate,setHeartRate] = useState("");
@@ -46,10 +43,8 @@ function Dashboard(){
 
     const[hospital_code,setHospitalCode] = useState("");
 
-    // diagnosis
 
     const[diagnosesList , setDiagnosesList]= useState({ name: '', isSuspected: false });
-    // For Diagnoses searches functions
     const [diagnosisTerm, setDiagnosisTerm] = useState('');
 
     //handle Diagnosis change
@@ -62,6 +57,7 @@ function Dashboard(){
       const filteredDiagnosis = diagnoses.filter((dynos) =>
       dynos.toLowerCase().includes(diagnosisTerm.toLowerCase())
     );
+
 
     React.useEffect(()=>{
         
@@ -132,158 +128,28 @@ function Dashboard(){
       pros.toLowerCase().includes(medicationTerm.toLowerCase())
   );
 
+  const navigate = useNavigate();
+  React.useEffect(() => {
 
+     
+      
+      var hospital = localStorage.getItem("hospital");
 
+      if(hospital == null){
+          navigate('/');
+      }
+      else{
+          setHospitalCode(hospital);
+      }
 
       
 
 
-    
-
-
-
-
-    // End of form data
-
-     const navigate = useNavigate();
-    React.useEffect(() => {
-
-       
-        
-        var hospital = localStorage.getItem("hospital");
-
-        if(hospital == null){
-            navigate('/');
-        }
-        else{
-            setHospitalCode(hospital);
-        }
-
-        
-
-  
 
 
 
 }, []);
 
-
-async function addToFireStore(e){
-    e.preventDefault();
-
-    try {
-
-        const first_name = firstname;
-        const last_name = lastname;
-        const mygender = gender;
-        const mydob = dob;
-        const mycard = card_number;
-        const dateofadmission = date_of_admission;
-        const temp = temperature;
-        const heart = heartrate;
-        const blood = bloodpressure;
-        const weigh = weight;
-        const oxygen = oxygen_saturation;
-        const diagnosis = diagnosesList;
-        const lab = laboratoryList;
-        const surgery = surgicalList;
-        const scann = scanList;
-        const med =  medicationList;
-        const outcomes = outcome;
-        const discharged = discharged_date;
-
-        setFirstName("");
-        setLastName("");
-        setGender("");
-        setDob("");
-        setCardNumber("");
-        setDateOfAdmission("");
-        setTemperature("");
-        setHeartRate("");
-        setBloodPressure("");
-        setWeight("");
-        setOxygenSaturation("");
-        setDiagnosesList({ name: '', isSuspected: false });
-        setLaboratoryList([]);
-        setSurgicalList([]);
-        setScanList([]);
-        setMedicationList([]);
-        setOutcome("");
-        setDisChargedDate("");
-        
-
-
-
-
-        await setDoc(doc(db, "hospitals", currentTimestamp), {
-             firstname:first_name,
-             lastname:last_name,
-             gender:mygender,
-             dob:mydob,
-             card_number:mycard,
-             date_of_admission:dateofadmission,
-
-            //  vitals
-
-            temperature:temp,
-            heartrate:heart,
-            bloodpressure:blood,
-            weight:weigh,
-            oxygen_saturation:oxygen,
-
-            // diagnosis
-
-            diagnosis_name:diagnosis.name,
-            diagnoses_suspected:diagnosis.isSuspected,
-            lab:lab,
-            surgery:surgery,
-            scan:scann,
-            medications:med,
-
-            // outcome
-            outcome:outcomes,
-            discharged:discharged,
-
-
-
-
-            refcode:currentTimestamp,
-            date:moment(new Date()).format('dddd, MMMM DD, YYYY'),
-            month:currentMonth,
-            year:currentYear,
-            
-
-            // hospitalcode
-
-            hospital_code:hospital_code,
-
-          });
-
-          console.log("Record Added Successfully");
-
-          await axios.get(`https://script.google.com/macros/s/AKfycbylkXnmyeCEdPHJRtr0tyl3vt_0Vd5IxWhUxHcd1vNR1hpYOemam8_JrpeHVxgVJhdBGA/exec?Firstname=${first_name}&Lastname=${last_name}&Gender=${mygender}&Dob=${mydob}&Card_Number=${mycard}&Date_of_admission=${dateofadmission}&Temperature=${temp}&Heartrate=${heart}&Blood_pressure=${blood}&Weight=${weigh}&Oxygen_Saturation=${oxygen}&Diagnosis=${diagnosis.name}&Laboratory_Test=${lab}&Surgeries=${surgery}&Medications=${med}&Outcome=${outcomes}&Discharged_Date=${discharged}&Ref_Code=${currentTimestamp}&Date=${moment(new Date()).format('dddd, MMMM DD, YYYY')}&Month=${currentMonth}&Year=${currentYear}&Hosptial_Code=${hospital_code}&sheet=${currentMonth}`).then(response => {
-                console.log(response)
-                // hideLoader();
-                
-
-
-     
-            }).catch(e => {
-                console.error("Error adding document: ", e);
-            })
-
-
-         
-        
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
-
-    console.log("done")
-
-    //   setFirstName("");
-    
-}
 
 
 function handleLogout(){
@@ -294,6 +160,12 @@ function handleLogout(){
         navigate('/');
     }
 }
+
+      
+
+
+
+
 
 
     return (
@@ -373,9 +245,9 @@ function handleLogout(){
                     <br/>
 
 
-                    <form onSubmit={addToFireStore}>
+                    <form >
 
-                    <section className='patientinfo px-3'>
+                    {/* <section className='patientinfo px-3'>
                     <p className='font-weight-bold'style={{
                         color:"#293D34",
                     }}>Patient's Information</p>
@@ -435,7 +307,7 @@ function handleLogout(){
                      </div>
                        
 
-                </section>
+                </section> */}
 
 
                 <section className='patientinfo px-3'>
@@ -866,8 +738,5 @@ function handleLogout(){
 
         </>
     );
-
-
 }
-
-export default Dashboard;
+export default RecordEdit;

@@ -8,6 +8,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { async } from '@firebase/util';
 import edo from './edo.png';
 import { Link, useNavigate}  from 'react-router-dom';
+import {getDocs, where, query } from "firebase/firestore";
 
 
 
@@ -22,6 +23,10 @@ function Login(){
     const[hospital_code, setHospitalCode] = useState('');
     const[password, setPassword] = useState("");
     const navigate = useNavigate();
+
+    const [documentExists, setDocumentExists] = useState(false);
+
+    const [showError, setShowError] = useState(false);
 
 
 
@@ -44,15 +49,41 @@ function Login(){
    }
 
 
-        function handleLogin(e){
+       async function handleLogin(e){
             e.preventDefault();
             const hospital = localStorage.getItem("hospital");
 
             if(hospital == null){
-                localStorage.setItem("hospital",hospital_code);
+
+
+                const hospitalsRef = collection(db, 'centers');
+                const q = query(hospitalsRef, where('hospital_code', '==', hospital_code));
+
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                  setDocumentExists(true);
+
+                  localStorage.setItem("hospital",hospital_code);
                  navigate('/dashboard');
+                }
+
+                else{
+                    setDocumentExists(false);
+                    setShowError(true);
+
+                }
+
+
+
+
+
+                // localStorage.setItem("hospital",hospital_code);
+                //  navigate('/dashboard');
                 
             }
+
+           
 
             
             
@@ -107,6 +138,11 @@ function Login(){
                 <div className='col-md-4 m-auto'>
 
                     <div className='text-center py-5'>
+
+                        {showError && <div className='alert alert-danger text-danger font-weight-bold'>
+                            <p className='text-center'>Invalid Hospital Code</p>
+
+                        </div>}
 
                     <img src={edo} className="" style={{
                         width:"130px",

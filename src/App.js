@@ -11,6 +11,7 @@ import Login from './auth/login';
 import Dashboard from './dashboard/dashboard';
 import Today from './dashboard/today';
 import Records from './dashboard/records';
+import RecordEdit from './dashboard/recordedit';
 
 
 function App() {
@@ -24,7 +25,10 @@ function App() {
 
       <Route path="/today" element={<Today/>} />
 
-  
+      <Route path="/edit" element={<RecordEdit/>} />
+
+
+    
 
       
         

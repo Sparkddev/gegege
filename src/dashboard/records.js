@@ -13,7 +13,8 @@ import { doc, setDoc } from "firebase/firestore";
 import { async } from '@firebase/util';
 import axios from 'axios'
 
-import { collection, getDocs } from "firebase/firestore";
+
+import { collection, getDocs, where, query } from "firebase/firestore";
 
 
 
@@ -25,6 +26,16 @@ function Records(){
     const[hospital_code,setHospitalCode] = useState("");
     const[pullData, setPullData] = useState([]);
 
+    const[selected ,setSelectedModal] = useState({});
+    const[selected_Array , setSelectedArray] = useState([]); 
+
+    const[selected_Surgical, setSelectedSurgical] = useState([]);
+
+    const[selected_xray, setSelectedXray] = useState([]);
+
+    const[selected_medication, setSelectedMedication] = useState([]);
+
+
 
 
     // end of states
@@ -33,16 +44,36 @@ function Records(){
 
     const navigate = useNavigate();
 
+
     const getCollectionDate =  async() => {
         try {
-            const querySnapshot = await getDocs(collection(db, 'hospitals'));
+           // const q= await getDocs(collection(db, 'hospitals'));
+            const hospitalsRef = collection(db, 'hospitals');
+            const q = query(hospitalsRef, where('hospital_code', '==', hospital_code));
     
+    
+        const querySnapshot = await getDocs(q);
             const fetchedData = [];
           querySnapshot.forEach(doc => {
             console.log(doc.id, " => ", doc.data());
             fetchedData.push({ id: doc.id, ...doc.data() });
           });
           setPullData(fetchedData);
+    
+    
+        // const q = query(collection(db, "hospitals"), where("hospital_code", "==", hospital_code));
+    
+        //     const fetchedData = [];
+        //     const querySnapshot = await getDocs(q);
+    
+        //   querySnapshot.forEach(doc => {
+        //     console.log(doc.id, " => ", doc.data());
+        //     fetchedData.push({ id: doc.id, ...doc.data() });
+        //   });
+        //   setPullData(fetchedData);
+    
+    
+    
         }
     
     
@@ -50,11 +81,14 @@ function Records(){
             console.error("Error getting documents: ", e);
         }
     }
+    
+
+   
 
 
     React.useEffect(() => {
 
-       
+    
         
         var hospital = localStorage.getItem("hospital");
 
@@ -64,7 +98,7 @@ function Records(){
         else{
             setHospitalCode(hospital);
 
-            getCollectionDate();
+            
         }
 
         
@@ -74,6 +108,15 @@ function Records(){
 
 
 }, []);
+
+
+React.useEffect(() => {
+getCollectionDate();
+
+
+
+}, [hospital_code]);
+
 
 
 
@@ -90,6 +133,11 @@ function handleLogout(){
         localStorage.removeItem('hospital');
         navigate('/');
     }
+}
+
+
+function navigateToEdit(){
+    navigate('/edit');
 }
 
 
@@ -177,7 +225,7 @@ function handleLogout(){
                         <div className='col-md-4 py-2 bg-info rounded'>
                             <i className='fa fas-users'></i>
 
-                            <h3 className='text-center font-weight-bold showcasetext'>88</h3>
+                            <h3 className='text-center font-weight-bold showcasetext'>{pullData.length}</h3>
                             <h5 className='text-center font-weight-bold showcasetext'>Total Patients</h5>
                         </div>
 
@@ -279,9 +327,9 @@ function handleLogout(){
                         
 
                         <tbody>
-                            {pullData.map(function(d,index){
+                            {pullData.map(function(d){
                                 return (
-                                    <tr key={index}>
+                                    <tr key={d.id}>
                                         <td>{d.firstname}</td>
                                         <td>{d.lastname}</td>
                                         <td>{d.gender}</td>
@@ -289,13 +337,278 @@ function handleLogout(){
                                         <td>{d.dob}</td>
                                         <td>{d.date}</td>
                                         <td>
-                                            <a className='btn btn-sm font-weight-bold'style={{
+                                            <a type='button' data-toggle="modal" data-target=".bd-example-modal-lg"onClick={function(){
+                                                setSelectedModal(d);
+                                                setSelectedArray(d.lab);
+
+                                                setSelectedSurgical(d.surgery);
+                                                setSelectedXray(d.scan);
+                                                setSelectedMedication(d.medications);
+                                            }} className='btn btn-sm font-weight-bold'style={{
                                                     background: "rgb(41, 61, 52)",
                                                     color:"white",
-                                            }}>View</a> || <a className='btn btn-sm btn-warning text-dark font-weight-bold'>Edit</a>
+                                            }}>View</a> || <a onClick={function(){
+                                                    navigate('/edit');
+                                            }} className='btn btn-sm btn-warning text-dark font-weight-bold'>Edit</a>
                                         </td>
 
+                                      
+                                        {/* <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> */}
+
+                                        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content"style={{
+                                                background: "rgb(41, 61, 52)",
+                                                color:"white",
+                                            }}>
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">View Record</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                                <div className='py-3 px-2'>
+                                                    <h6 className='font-weight-bold'>PATIENT'S INFORMATION</h6>
+                                                        <div class="row my-4">
+                                                            <div class="col">
+                                                            <label className='label'>First Name  </label>
+                                                            <p className='font-weight-bold'>{selected.firstname}</p>
+                                                            </div>
+                                                            <div class="col">
+                                                            <label className='label'>Last Name  </label>
+                                                            <p className='font-weight-bold'>{selected.lastname}</p>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label className='label'>Gender   </label>
+                                                                <p className='font-weight-bold'>{selected.gender}</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row my-4">
+                                                            <div class="col">
+                                                            <label className='label'>Card Number  </label>
+                                                            <p className='font-weight-bold'>{selected.card_number}</p>
+                                                            </div>
+                                                            <div class="col">
+                                                            <label className='label'>Date of Birth  </label>
+                                                            <p className='font-weight-bold'>{selected.dob}</p>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label className='label'>Date of Admission   </label>
+                                                                <p className='font-weight-bold'>{selected.date_of_admission}</p>
+                                                            </div>
+                                                        </div>
+
+                                                       
+                                                </div>
+
+                                                {/* VITALS */}
+                                               
+
+
+
+                                                <div className=' px-2'>
+                                                    <h6 className='font-weight-bold'>VITAL SIGNS</h6>
+                                                        <div class="row my-3">
+                                                            <div class="col">
+                                                            <label className='label'>Temperature (°C)  </label>
+                                                            <p className='font-weight-bold'>{selected.temperature}</p>
+                                                            </div>
+                                                            <div class="col">
+                                                            <label className='label'>Heart Rate (bpm) </label>
+                                                            <p className='font-weight-bold'>{selected.heartrate}</p>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label className='label'>Blood pressure (mmHg)   </label>
+                                                                <p className='font-weight-bold'>{selected.bloodpressure}</p>
+                                                            </div>
+
+                                                            <div class="col">
+                                                                <label className='label'>Weight (kg)  </label>
+                                                                <p className='font-weight-bold'>{selected.weight}</p>
+                                                            </div>
+
+                                                            
+                                                        </div>
+
+                                                        <div class="row ">
+                                                        <div class="col-3">
+                                                                <label className='label'>Oxygen saturation (%)  </label>
+                                                                <p className='font-weight-bold'>{selected.oxygen_saturation}</p>
+                                                            </div>
+                                                           
+                                                        </div>
+
+                                                        
+
+                                                       
+                                                </div>
+
+
+
+                                                {/* VITALS */}
+
+                                                {/* Diagnosis and procedures */}
+
+                                                <div className=' px-2'>
+                                                    <h6 className='font-weight-bold'>DIAGNOSIS AND PROCEDURES</h6>
+                                                        <div class="row my-3">
+                                                            <div class="col">
+                                                            <label className='label'>Diagnosis  </label>
+                                                            <p className='font-weight-bold'>{selected.diagnosis_name} {selected.diagnoses_suspected == true && <span><input className='px-3' type="checkbox" checked={selected.diagnoses_suspected} />Suspected</span>} </p>
+                                                            </div>
+                                                            <div class="col">
+                                                            <label className='label'>Laboratory Test </label> <br/>
+                                                            {selected_Array.map((list, index) => (
+                                                                <p style={{
+                                                                    background:"#293D34",
+                                                                    color:"white",
+                                                                
+                                                                    
+                                                                }} className='badge mx-1 my-2'key={index}>{list}</p>
+                                                            ))}
+                                                            </div>
+                                                           
+
+                                                            
+
+                                                            
+                                                        </div>
+
+
+                                                        <div class="row my-3">
+                                                           
+                                                            <div class="col">
+                                                            <label className='label'>Surgical Intervention </label> <br/>
+                                                            {selected_Surgical.map((list, index) => (
+                                                                <p style={{
+                                                                    background:"#293D34",
+                                                                    color:"white",
+                                                                
+                                                                    
+                                                                }} className='badge mx-1 my-2'key={index}>{list}</p>
+                                                            ))}
+                                                            </div>
+                                                           
+
+                                                            <div class="col">
+                                                            <label className='label'>Xray & Ultrasound </label> <br/>
+                                                            {selected_xray.map((list, index) => (
+                                                                <p style={{
+                                                                    background:"#293D34",
+                                                                    color:"white",
+                                                                
+                                                                    
+                                                                }} className='badge mx-1 my-2'key={index}>{list}</p>
+                                                            ))}
+                                                            </div>
+
+                                                            
+
+                                                            
+                                                        </div>
+
+                                                        
+
+                                                        
+
+                                                       
+                                                </div>
+                                                {/* end of diagnosis and procedures */}
+
+
+                                                {/* medication and outcome */}
+
+                                                <div className=' px-2'>
+                                                    <h6 className='font-weight-bold'>MEDICATIONS & OUTCOME</h6>
+                                                        <div class="row my-3">
+
+                                                        <div class="col">
+                                                            <label className='label'>Medication(s) </label> <br/>
+                                                            {selected_medication.map((list, index) => (
+                                                                <p style={{
+                                                                    background:"#293D34",
+                                                                    color:"white",
+                                                                
+                                                                    
+                                                                }} className='badge mx-1 my-2'key={index}>{list}</p>
+                                                            ))}
+                                                            </div>
+
+
+
+                                                            <div class="col">
+                                                            <label className='label'>Outcome  </label>
+                                                            <p className='font-weight-bold'>{selected.outcome}  </p>
+                                                            </div>
+                                                            
+                                                           {/* adding to database */}
+
+                                                            
+
+                                                            
+                                                        </div>
+
+
+                                                        
+                                                        
+
+                                                        
+
+                                                       
+                                                </div>
+
+                                                {/* end of medication and outcome */}
+
+
+                                                {/* Admission and Discharge */}
+
+                                                <div className=' px-2'>
+                                                    <h6 className='font-weight-bold'>ADMISSION & DISCHARGE</h6>
+                                                        <div class="row my-3">
+
+                                                      
+                                                        <div class="col">
+                                                            <label className='label'>Date Admitted  </label>
+                                                            <p className='font-weight-bold'>{selected.date_of_admission}  </p>
+                                                            </div>
+
+
+                                                            <div class="col">
+                                                            <label className='label'>Discharge Date  </label>
+                                                            <p className='font-weight-bold'>{selected.discharged}  </p>
+                                                            </div>
+                                                            
+                                                           {/* adding to database */}
+
+                                                            
+
+                                                            
+                                                        </div>
+
+
+                                                        
+                                                        
+
+                                                        
+
+                                                       
+                                                </div>
+
+
+
+                                                 {/* End of Admission and discharge */}
+
+
+
+                                               
+                                            </div>
+                                        </div>
+</div>
+
                                     </tr>
+
+                                    
                                 );
                             })}
                         </tbody>
