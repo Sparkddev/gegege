@@ -745,7 +745,7 @@ function handleLogout(){
                                             e.preventDefault();
                                             const updatedMedication = [...medicationList];
                                             updatedMedication.splice(index, 1);
-                                            setScanList(updatedMedication);
+                                            setMedicationList(updatedMedication);
                                         }} href='' className='symptomscancel text-light px-2 font-weight-bold'>x</a></p>
                                 ))}
 

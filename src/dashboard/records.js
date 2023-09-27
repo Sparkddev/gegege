@@ -25,6 +25,7 @@ function Records(){
 
     const[hospital_code,setHospitalCode] = useState("");
     const[pullData, setPullData] = useState([]);
+    const[todayEntry , setTodayEntry] = useState([]);
 
     const[selected ,setSelectedModal] = useState({});
     const[selected_Array , setSelectedArray] = useState([]); 
@@ -81,6 +82,42 @@ function Records(){
             console.error("Error getting documents: ", e);
         }
     }
+
+
+
+    // get today entry
+
+    const getTodayEntry =  async() => {
+        try {
+           // const q= await getDocs(collection(db, 'hospitals'));
+            const hospitalsRef = collection(db, 'hospitals');
+            const q = query(hospitalsRef, where('hospital_code', '==', hospital_code),where('date', '==', moment(new Date()).format('dddd, MMMM DD, YYYY')));
+    
+    
+        const querySnapshot = await getDocs(q);
+            const fetchedData = [];
+          querySnapshot.forEach(doc => {
+            console.log(doc.id, " => ", doc.data());
+            fetchedData.push({ id: doc.id, ...doc.data() });
+          });
+          setTodayEntry(fetchedData);
+    
+    
+        
+    
+    
+        }
+    
+    
+        catch(e){
+            console.error("Error getting documents: ", e);
+        }
+    }
+    
+
+
+
+    // 
     
 
    
@@ -112,7 +149,7 @@ function Records(){
 
 React.useEffect(() => {
 getCollectionDate();
-
+getTodayEntry();
 
 
 }, [hospital_code]);
@@ -136,9 +173,7 @@ function handleLogout(){
 }
 
 
-function navigateToEdit(){
-    navigate('/edit');
-}
+
 
 
 
@@ -226,14 +261,14 @@ function navigateToEdit(){
                             <i className='fa fas-users'></i>
 
                             <h3 className='text-center font-weight-bold showcasetext'>{pullData.length}</h3>
-                            <h5 className='text-center font-weight-bold showcasetext'>Total Patients</h5>
+                            <h5 className='text-center font-weight-bold showcasetext'>Total Entry</h5>
                         </div>
 
                         <div className='col-md-4 py-2 bg-secondary rounded'>
                              <i className='fa fas-users'></i>
 
-                            <h3 className='text-center font-weight-bold showcasetext'>3</h3>
-                            <h5 className='text-center font-weight-bold showcasetext'>Admitted Today</h5>
+                            <h3 className='text-center font-weight-bold showcasetext'>{todayEntry.length}</h3>
+                            <h5 className='text-center font-weight-bold showcasetext'>Today Records</h5>
                         </div>
 
                         <div className='col-md-4 py-2 rounded'style={{
@@ -348,7 +383,34 @@ function navigateToEdit(){
                                                     background: "rgb(41, 61, 52)",
                                                     color:"white",
                                             }}>View</a> || <a onClick={function(){
-                                                    navigate('/edit');
+                                                
+                                                    // navigate('/edit');
+                                                
+                                                    navigate('/edit',
+                                                    {state:
+                                                        {refcode:d.refcode, 
+                                                            temperature:d.temperature,
+                                                            heartrate:d.heartrate,
+                                                            bloodpressure:d.bloodpressure,
+                                                            weight:d.weight,
+                                                            oxygen_saturation:d.oxygen_saturation,
+                                                            diagnosis_name:d.diagnosis_name,
+                                                            diagnoses_suspected:d.diagnoses_suspected,
+                                                            lab:d.lab,
+                                                            surgery:d.surgery,
+                                                            medication:d.medications,
+                                                            scan:d.scan,
+                                                            outcome:d.outcome,
+                                                            discharged:d.discharged,
+                                                            id:d.id,
+
+                                                            // date:moment(selectedDate).format('dddd, MMMM DD, YYYY'), 
+                                                            // time: moment(selectedTime, 'h:mm a').format('h:mm a')
+                                                
+                                                        }
+                                                    }
+                                                    );
+                                                
                                             }} className='btn btn-sm btn-warning text-dark font-weight-bold'>Edit</a>
                                         </td>
 

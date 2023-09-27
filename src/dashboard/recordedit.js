@@ -9,13 +9,20 @@ import surgical from './surgical';
 import scan from './scan';
 import medication from './medication';
 import db from '../firebase';
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, updateDoc } from "firebase/firestore"; 
 import { async } from '@firebase/util';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 
 function RecordEdit(){
        // Personal information
+
+       let location = useLocation();
+
+
+       const[id, setID] = useState("");
+       const[refcode, setRefCode] = useState("");
        const[firstname , setFirstName] = useState("");
        const[lastname, setLastName] = useState("");
        const[gender, setGender] = useState("");
@@ -42,6 +49,10 @@ function RecordEdit(){
     const[oxygen_saturation, setOxygenSaturation] = useState("");
 
     const[hospital_code,setHospitalCode] = useState("");
+
+
+    const[diagnosis_name, setDiagnosisName] = useState("");
+    const[diagnoses_suspected, setDiagnosesSuspected] = useState(false);
 
 
     const[diagnosesList , setDiagnosesList]= useState({ name: '', isSuspected: false });
@@ -151,6 +162,34 @@ function RecordEdit(){
 }, []);
 
 
+React.useEffect(()=>{
+       
+    if(location.state != null){
+     setRefCode(location.state.refcode);
+     setTemperature(location.state.temperature);
+     setHeartRate(location.state.heartrate);
+     setBloodPressure(location.state.bloodpressure);
+     setWeight(location.state.weight);
+     setOxygenSaturation(location.state.oxygen_saturation);
+     setDiagnosisName(location.state.diagnosis_name);
+     setDiagnosesSuspected(location.state.diagnoses_suspected);
+     setLaboratoryList(location.state.lab);
+     setSurgicalList(location.state.surgery);
+     setMedicationList(location.state.medication);
+     setScanList(location.state.scan);
+     setOutcome(location.state.outcome);
+     setDisChargedDate(location.state.discharged);
+     setID(location.state.id);
+
+    
+     
+   
+    }
+     
+     
+     
+ },[])
+
 
 function handleLogout(){
     var hospital = localStorage.getItem("hospital");
@@ -161,7 +200,110 @@ function handleLogout(){
     }
 }
 
-      
+
+
+async function updateRecords(e){
+    e.preventDefault();
+
+    try {
+
+        // const first_name = firstname;
+        // const last_name = lastname;
+        // const mygender = gender;
+        // const mydob = dob;
+        // const mycard = card_number;
+        // const dateofadmission = date_of_admission;
+        const temp = temperature;
+        const heart = heartrate;
+        const blood = bloodpressure;
+        const weigh = weight;
+        const oxygen = oxygen_saturation;
+        const diagnosisname = diagnosis_name;
+        const diagnosessuspected = diagnoses_suspected;
+        const lab = laboratoryList;
+        const surgery = surgicalList;
+        const scann = scanList;
+        const med =  medicationList;
+        const outcomes = outcome;
+        const discharged = discharged_date;
+
+       
+        setTemperature("");
+        setHeartRate("");
+        setBloodPressure("");
+        setWeight("");
+        setOxygenSaturation("");
+        //setDiagnosesList({ name: '', isSuspected: false });
+        setDiagnosisName("");
+        setDiagnosesSuspected(false);
+        setLaboratoryList([]);
+        setSurgicalList([]);
+        setScanList([]);
+        setMedicationList([]);
+        setOutcome("");
+        setDisChargedDate("");
+        
+
+
+
+        const recordRef = doc(db, "hospitals", id);
+
+        await updateDoc(recordRef, {
+       
+
+            //  vitals
+
+            temperature:temp,
+            heartrate:heart,
+            bloodpressure:blood,
+            weight:weigh,
+            oxygen_saturation:oxygen,
+
+            // diagnosis
+
+            diagnosis_name:diagnosisname,
+            diagnoses_suspected:diagnosessuspected,
+            lab:lab,
+            surgery:surgery,
+            scan:scann,
+            medications:med,
+
+            // outcome
+            outcome:outcomes,
+            discharged:discharged,
+
+
+
+
+           
+
+          });
+
+          console.log("Record Updated Successfully");
+
+        //   await axios.get(`https://script.google.com/macros/s/AKfycbylkXnmyeCEdPHJRtr0tyl3vt_0Vd5IxWhUxHcd1vNR1hpYOemam8_JrpeHVxgVJhdBGA/exec?Firstname=${first_name}&Lastname=${last_name}&Gender=${mygender}&Dob=${mydob}&Card_Number=${mycard}&Date_of_admission=${dateofadmission}&Temperature=${temp}&Heartrate=${heart}&Blood_pressure=${blood}&Weight=${weigh}&Oxygen_Saturation=${oxygen}&Diagnosis=${diagnosis.name}&Laboratory_Test=${lab}&Surgeries=${surgery}&Medications=${med}&Outcome=${outcomes}&Discharged_Date=${discharged}&Ref_Code=${currentTimestamp}&Date=${moment(new Date()).format('dddd, MMMM DD, YYYY')}&Month=${currentMonth}&Year=${currentYear}&Hosptial_Code=${hospital_code}&sheet=${currentMonth}`).then(response => {
+        //         console.log(response)
+        //         // hideLoader();
+                
+
+
+     
+        //     }).catch(e => {
+        //         console.error("Error adding document: ", e);
+        //     })
+
+
+         
+        
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+
+    console.log("done")
+
+    //   setFirstName("");
+    
+}
 
 
 
@@ -239,13 +381,13 @@ function handleLogout(){
 
                     <h5 className='card card-heading py-3 text-center m-0'style={{
                         fontWeight:"700",
-                    }}>{moment(new Date()).format('dddd, MMMM DD, YYYY')}</h5>
+                    }}>Refcode : {refcode} </h5>
 
                     <br/>
                     <br/>
 
 
-                    <form >
+                    <form onSubmit={updateRecords}>
 
                     {/* <section className='patientinfo px-3'>
                     <p className='font-weight-bold'style={{
@@ -401,7 +543,7 @@ function handleLogout(){
                                                 {filteredDiagnosis.map((item, index) => (
                                                 <li onClick={function(e){
 
-                                                    setDiagnosesList({...diagnosesList, name:item});
+                                                    setDiagnosisName(item);
                                                     setDiagnosisTerm('');
                                                 }} className='searchItem py-1 px-2 rounded' key={index}>{item}</li>
                                                 ))}
@@ -409,16 +551,15 @@ function handleLogout(){
 
                                     }
 
-                    {diagnosesList.name !== '' &&  <div className='row pl-3'> <p className="badge px-2 py-1" style={{
+                    {diagnosis_name !== '' &&  <div className='row pl-3'> <p className="badge px-2 py-1" style={{
                         background:"#293D34",
                         color:"white",
                      
                         
-                    }} >{diagnosesList.name} </p>
+                    }} >{diagnosis_name} </p>
                     
-                            <input className='mycheck mb-3 mx-3' type='checkbox'onChange={function(e){
-                                let SuspectedStatus = diagnosesList.isSuspected;
-                                    setDiagnosesList({...diagnosesList, isSuspected:!SuspectedStatus});
+                            <input className='mycheck mb-3 mx-3'checked={diagnoses_suspected} type='checkbox'onChange={function(e){
+                               setDiagnosesSuspected(!diagnoses_suspected);
                                     console.log("checked");
                                 }}  /><span style={{
                                     fontSize:"12px",
@@ -431,7 +572,10 @@ function handleLogout(){
                             <a onClick={function(e){
                                     e.preventDefault();
                                     
-                                    setDiagnosesList({...diagnosesList, name:"", isSuspected: false});
+                                    // setDiagnosesList({...diagnosesList, name:"", isSuspected: false});
+                                    setDiagnosisName("");
+                                    setDiagnosesSuspected(false)
+
                                 }} href='' className='symptomscancel   text-info px-2 font-weight-bold text-right'> X</a>
                             </div>
                     
@@ -617,7 +761,7 @@ function handleLogout(){
                                             e.preventDefault();
                                             const updatedMedication = [...medicationList];
                                             updatedMedication.splice(index, 1);
-                                            setScanList(updatedMedication);
+                                            setMedicationList(updatedMedication);
                                         }} href='' className='symptomscancel text-light px-2 font-weight-bold'>x</a></p>
                                 ))}
 
@@ -712,16 +856,15 @@ function handleLogout(){
 
                 </section>
 
-                {
-                    firstname && lastname && gender && dob && card_number && date_of_admission && <section className='buttonsection col-md-6 m-auto'>
-                    <button className='btn py-3 rounded w-100'style={{
+          <section className='buttonsection col-md-6 m-auto'>
+                    <button type='submit' className='btn py-3 rounded w-100'style={{
                         background:"#293D34",
                         color:"white",
                         fontSize:"18px",
                         fontWeight:"bold",
-                    }}>Save and Submit</button>
+                    }}>Update Record</button>
                 </section>
-                }
+                
 
                 </form>
                     
