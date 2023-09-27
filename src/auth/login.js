@@ -114,7 +114,7 @@ function Login(){
     return (
         <div className='maindiv'style={{
             
-            height:"1000px",
+            minHeight:"100vh",
             width:"100%",
             overflow:'hidden',
             display:'flex',

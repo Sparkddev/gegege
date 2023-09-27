@@ -26,6 +26,7 @@ function Records(){
     const[hospital_code,setHospitalCode] = useState("");
     const[pullData, setPullData] = useState([]);
     const[todayEntry , setTodayEntry] = useState([]);
+    const[dischargedEntry, setDischargeEntry] = useState([]);
 
     const[selected ,setSelectedModal] = useState({});
     const[selected_Array , setSelectedArray] = useState([]); 
@@ -35,6 +36,11 @@ function Records(){
     const[selected_xray, setSelectedXray] = useState([]);
 
     const[selected_medication, setSelectedMedication] = useState([]);
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [genderFilter, setGenderFilter] = useState('');
+
+    const[outcome, setOutcome] = useState("");
 
 
 
@@ -50,7 +56,9 @@ function Records(){
         try {
            // const q= await getDocs(collection(db, 'hospitals'));
             const hospitalsRef = collection(db, 'hospitals');
-            const q = query(hospitalsRef, where('hospital_code', '==', hospital_code));
+            const q = query(hospitalsRef, where('hospital_code', '==', hospital_code)
+            
+            );
     
     
         const querySnapshot = await getDocs(q);
@@ -61,18 +69,8 @@ function Records(){
           });
           setPullData(fetchedData);
     
-    
-        // const q = query(collection(db, "hospitals"), where("hospital_code", "==", hospital_code));
-    
-        //     const fetchedData = [];
-        //     const querySnapshot = await getDocs(q);
-    
-        //   querySnapshot.forEach(doc => {
-        //     console.log(doc.id, " => ", doc.data());
-        //     fetchedData.push({ id: doc.id, ...doc.data() });
-        //   });
-        //   setPullData(fetchedData);
-    
+          console.log(pullData)
+       
     
     
         }
@@ -103,6 +101,36 @@ function Records(){
           setTodayEntry(fetchedData);
     
     
+          console.log(pullData)
+    
+    
+        }
+    
+    
+        catch(e){
+            console.error("Error getting documents: ", e);
+        }
+    }
+
+
+    // getDischargedEntry
+
+    const getDischargedEntry =  async() => {
+        try {
+           // const q= await getDocs(collection(db, 'hospitals'));
+            const hospitalsRef = collection(db, 'hospitals');
+            const q = query(hospitalsRef, where('hospital_code', '==', hospital_code),where('outcome', '==', "Discharged to Home"));
+    
+    
+        const querySnapshot = await getDocs(q);
+            const fetchedData = [];
+          querySnapshot.forEach(doc => {
+            console.log(doc.id, " => ", doc.data());
+            fetchedData.push({ id: doc.id, ...doc.data() });
+          });
+          setDischargeEntry(fetchedData);
+    
+    
         
     
     
@@ -113,6 +141,7 @@ function Records(){
             console.error("Error getting documents: ", e);
         }
     }
+
     
 
 
@@ -150,6 +179,7 @@ function Records(){
 React.useEffect(() => {
 getCollectionDate();
 getTodayEntry();
+getDischargedEntry();
 
 
 }, [hospital_code]);
@@ -159,6 +189,19 @@ getTodayEntry();
 
 // pull data 
 
+const filteredData = pullData.filter(item => {
+    const genderMatch = genderFilter === '' || item["gender"] === genderFilter;
+    const nameMatch = searchTerm === '' || item["firstname"].includes(searchTerm) || item["lastname"].includes(searchTerm);
+    
+    const outcomeMatch = outcome === '' || item["outcome"] === outcome;
+    return genderMatch && nameMatch && outcomeMatch;
+  });
+
+
+
+//   const filteredData = laboratory.filter((pros) =>
+//   pros["gender"].toLowerCase().includes(laboratoryTerm.toLowerCase())
+// );
 
 
 
@@ -174,6 +217,29 @@ function handleLogout(){
 
 
 
+function showBadge(out){
+    if(out == "Stable Condition" || out == "Discharged to Home" || out == "Improved Condition" || out == "Patient Satisfaction" ){
+        return (
+           <p style={{
+               fontSize:"9px"
+           }} className='badge badge-sm badge-success text-light'>{out}</p>
+        );
+    }
+
+    else if (out == "Death") {
+        return (
+            <p style={{
+                fontSize:"9px"
+            }} className='badge badge-sm badge-danger text-light'>{out}</p>
+         );
+    } else {
+        return (
+            <p style={{
+                fontSize:"9px"
+            }} className='badge badge-sm badge-warning text-dark'>{out}</p>
+         );
+    }
+}
 
 
 
@@ -276,7 +342,7 @@ function handleLogout(){
                         }}>
                                 <i className='fa fas-users'></i>
 
-                            <h3 className='text-center font-weight-bold showcasetext'>88</h3>
+                            <h3 className='text-center font-weight-bold showcasetext'>{dischargedEntry.length}</h3>
                             <h5 className='text-center font-weight-bold showcasetext'>Discharged</h5>
                         </div>
 
@@ -288,7 +354,9 @@ function handleLogout(){
                         <div className='row mx-3 py-2'>
                             <div class="col">
                             
-                            <input type="text"placeholder='Search by Name' class="form-control"/>
+                            <input value={searchTerm} onChange={function(e){
+                                setSearchTerm(e.target.value);
+                            }} type="text"placeholder='Search by Name' class="form-control"/>
                             </div>
                             {/* <div class="col">
                             <label>Last Name   </label>
@@ -296,7 +364,9 @@ function handleLogout(){
                             </div> */}
                             <div class="col">
                                 {/* <label>Gender </label> */}
-                                <select className='form-control'>
+                                <select value={genderFilter} onChange={function(e){
+                                    setGenderFilter(e.target.value)
+                                }} className='form-control'>
                                     <option value="">Choose Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -305,7 +375,10 @@ function handleLogout(){
 
                             <div class="col">
                                 {/* <label>Outcome </label> */}
-                                <select className='form-control'>
+                                <select value={outcome} onChange={function(e){
+                                    setOutcome(e.target.value);
+
+                                }} className='form-control'>
                                     <option value="">Choose Outcome</option>
                                     <option value="">Select Outcome</option>
                              <option value="Improved Condition">Improved Condition</option>
@@ -349,8 +422,9 @@ function handleLogout(){
                                 <th>Last Name</th>
                                 <th>Gender</th>
                                 <th>Card Number</th>
-                                <th>DOB</th>
+                               
                                 <th>Date of Entry</th>
+                                <th>Outcome</th>
                                 {/* <th>Date of Discharged</th> */}
 
                                 <th>Actions</th>
@@ -362,15 +436,18 @@ function handleLogout(){
                         
 
                         <tbody>
-                            {pullData.map(function(d){
+                            {filteredData.map(function(d){
                                 return (
                                     <tr key={d.id}>
                                         <td>{d.firstname}</td>
                                         <td>{d.lastname}</td>
                                         <td>{d.gender}</td>
                                         <td>{d.card_number}</td>
-                                        <td>{d.dob}</td>
+                                        
                                         <td>{d.date}</td>
+                                        <td>
+                                            {showBadge(d.outcome)}
+                                        </td>
                                         <td>
                                             <a type='button' data-toggle="modal" data-target=".bd-example-modal-lg"onClick={function(){
                                                 setSelectedModal(d);
@@ -382,7 +459,7 @@ function handleLogout(){
                                             }} className='btn btn-sm font-weight-bold'style={{
                                                     background: "rgb(41, 61, 52)",
                                                     color:"white",
-                                            }}>View</a> || <a onClick={function(){
+                                            }}>View</a>  <a onClick={function(){
                                                 
                                                     // navigate('/edit');
                                                 
