@@ -9,14 +9,16 @@ import { initializeFirestore, CACHE_SIZE_UNLIMITED, persistentLocalCache, persis
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCjpZFvVdXWPN-hCyhXFE8-jlJgG39AM7E",
-  authDomain: "edohospitals.firebaseapp.com",
-  projectId: "edohospitals",
-  storageBucket: "edohospitals.appspot.com",
-  messagingSenderId: "143676448411",
-  appId: "1:143676448411:web:6e6cec4e988a3f4377303e",
-  measurementId: "G-X7HG0BLEP1"
+  apiKey: "AIzaSyAeH6TNeWR1-ySfqoG91egbghudMlZyDOQ",
+  authDomain: "recuitz.firebaseapp.com",
+  projectId: "recuitz",
+  storageBucket: "recuitz.appspot.com",
+  messagingSenderId: "686399885441",
+  appId: "1:686399885441:web:6447865adf9516010a3d80",
+  measurementId: "G-42KBZ11E5W"
 };
 
 // Initialize Firebase
