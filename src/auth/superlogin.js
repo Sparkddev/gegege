@@ -3,13 +3,20 @@ import './login.css';
 
 import { useState } from 'react';
 
-import db from '../firebase';
-import { addDoc, collection } from "firebase/firestore"; 
+
+
 import { async } from '@firebase/util';
-import edo from './edo.png';
+
 import { Link, useNavigate}  from 'react-router-dom';
-import {getDocs, where, query } from "firebase/firestore";
+
 import logo from '../footer.svg';
+
+
+
+import { auth, db } from "../firebase";
+
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 
@@ -20,96 +27,61 @@ function SuperLogin(){
     
 
 
-    const[hospital_code, setHospitalCode] = useState('');
+   
     const[password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const [documentExists, setDocumentExists] = useState(false);
+  
 
     const [showError, setShowError] = useState(false);
 
-   const[username, setUserName] = useState("");
+   const[email, setEmail] = useState("");
+   const[message, setMessage] = useState("");
 
 
 
-  async function addToFireStore(e){
-       e.preventDefault();
-
-       try {
-        const docRef = await addDoc(collection(db, "hospitals"), {
-          first: "Alan",
-          middle: "Mathison",
-          last: "Turing",
-          born: 1912
-        });
-      
-        console.log("Document written with ID: ", docRef.id);
-        alert("working")
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
-   }
-
-
-       async function handleLogin(e){
-            e.preventDefault();
-            const hospital = localStorage.getItem("hospital");
-
-            if(hospital == null){
-
-
-                const hospitalsRef = collection(db, 'centers');
-                const q = query(hospitalsRef, where('hospital_code', '==', hospital_code));
-
-                const querySnapshot = await getDocs(q);
-
-                if (!querySnapshot.empty) {
-                  setDocumentExists(true);
-
-                  localStorage.setItem("hospital",hospital_code);
-                 navigate('/dashboard');
-                }
-
-                else{
-                    setDocumentExists(false);
-                    setShowError(true);
-
-                }
-
-
-
-
-
-                // localStorage.setItem("hospital",hospital_code);
-                //  navigate('/dashboard');
-                
-            }
-
-           
-
-            
-            
-
-
-
-
-        }
+  
 
 
         React.useEffect(() => {
 
           
-                var hospital = localStorage.getItem("hospital");
+                // var hospital = localStorage.getItem("hospital");
 
-                if(hospital != null){
-                    navigate('/dashboard');
-                }
+                // if(hospital != null){
+                //     navigate('/dashboard');
+                // }
         
           
         
     
     
         }, []);
+
+
+        async function handleSignIn(e) {
+            e.preventDefault();
+            setShowError(false);
+          
+            try {
+              const userCredential = await signInWithEmailAndPassword(auth, email, password);
+              const user = userCredential.user;
+              console.log("Signed in as:", user);
+        
+              localStorage.setItem("authid", user.uid);
+          
+             
+          
+              // Continue with your navigation logic
+              navigate('/super/dashboard');
+            } catch (error) {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              console.error("Error signing in:", errorCode, errorMessage);
+              setShowError(true);
+              setMessage(errorMessage);
+            }
+          }
     
 
   
@@ -129,7 +101,7 @@ function SuperLogin(){
 
 
 
-            <form>
+            <form onSubmit={handleSignIn}>
                 {/* <div className='form-group'>
                     <input onChange={function(e){
                         setHospitalCode(e.target.value);
@@ -141,8 +113,8 @@ function SuperLogin(){
 
                     <div className='text-center py-5'>
 
-                        {showError && <div className='alert alert-danger text-danger font-weight-bold'>
-                            <p className='text-center'>Invalid Hospital Code</p>
+                        {showError && <div className='alert alert-danger text-danger text-center'>
+                            <p className='text-center'>Invalid Login Credentials</p>
 
                         </div>}
 
@@ -159,9 +131,9 @@ function SuperLogin(){
 
                     <div className='form-group'>
                         <input onChange={function(e){
-                            setUserName(e.target.value);
+                            setEmail(e.target.value);
 
-                        }} value={username} type="text"className='form-control py-4'placeholder='Enter Username'required />
+                        }} value={email} type="text"className='form-control py-4'placeholder='Enter Email Address'required />
 
                     </div>
 
@@ -177,7 +149,7 @@ function SuperLogin(){
                    
 
                     <div className='text-center'>
-                <button onClick={handleLogin} className='btn btn-sm submit py-2'>Go To Dashboard</button>
+                <button type='submit' className='btn btn-sm submit py-2'>Go To Dashboard</button>
 
                 </div>
 

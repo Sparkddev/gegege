@@ -3,7 +3,7 @@ import './login.css';
 
 import { useState } from 'react';
 
-import db from '../firebase';
+import {db, auth} from '../firebase';
 import { addDoc, collection } from "firebase/firestore"; 
 import { async } from '@firebase/util';
 import edo from './edo.png';

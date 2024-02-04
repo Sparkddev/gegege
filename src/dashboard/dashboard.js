@@ -8,7 +8,7 @@ import laboratory from './laboratory';
 import surgical from './surgical';
 import scan from './scan';
 import medication from './medication';
-import db from '../firebase';
+import {db , auth} from '../firebase';
 import { doc, setDoc } from "firebase/firestore"; 
 import { async } from '@firebase/util';
 import axios from 'axios';
@@ -318,20 +318,7 @@ function handleLogout(){
 
 
                 
-                        {/* <Link style={{
-                            textDecoration:"none",
-                        }} to={'/today'}>
-                        <p className='font-weight-bold alert alert-success text-success font-weight-bold py-1 mx-2 my-2'>Today's Record</p>
-                        </Link> */}
-
-
-                        {/* <Link style={{
-                            textDecoration:"none",
-                        }} to={'/today'}>
-                        <p className='font-weight-bold  font-weight-bold py-1 mx-2 my-2'>Today's Record</p>
-                        </Link>
-
-                            <br/> */}
+                        
 
 <Link style={{
                             textDecoration:"none",

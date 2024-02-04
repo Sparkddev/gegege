@@ -14,6 +14,11 @@ import Records from './dashboard/records';
 import RecordEdit from './dashboard/recordedit';
 import Home from './Home';
 import SuperLogin from './auth/superlogin';
+import DashBoardTwo from './dashboard/dashboardtwo';
+import Job from './dashboard/job';
+import Unique from './unique';
+import Application from './dashboard/applications';
+import Onboarding from './onboarding';
 
 function App() {
   return (
@@ -32,11 +37,16 @@ function App() {
       {/* recruite */}
       <Route path="/superadmin/login" element={<SuperLogin/>} />
      
+      <Route path="/super/dashboard" element={<DashBoardTwo/>} />
 
+      <Route path="/super/jobs" element={<Job/>} />
 
-    
+      <Route path="/applications" element={<Application/>} />
 
+      <Route path="/details" element={<Unique/>} />
       
+
+      <Route path="/final-stage" element={<Onboarding/>} />
         
     </Routes>
   </BrowserRouter>

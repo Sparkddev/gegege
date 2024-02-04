@@ -10,7 +10,7 @@ import social from './social.png';
 import footer from './footer.svg';
 
 
-import db from './firebase';
+import {db, auth} from './firebase';
 
 import axios from 'axios'
 
@@ -44,6 +44,7 @@ function Home(){
       }, []); 
 
 
+      const navigate = useNavigate();
 
     return (
         <>
@@ -55,10 +56,10 @@ function Home(){
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav ml-auto">
                    
-                    <a className="nav-link mx-3" href="#">Home</a>
-                    <a className="nav-link mx-3" href="#">About Us</a>
-                    <a className="nav-link mx-3" href="#">Job Openings</a>
-                    <a className="nav-link mx-3"href="#">For Veterans</a>
+                    <a className="nav-link mx-3" href="/">Home</a>
+                    <a className="nav-link mx-3" href="/#about">About Us</a>
+                    <a className="nav-link mx-3" href="#open">Job Openings</a>
+                    <a className="nav-link mx-3"href="#match">Get Matched</a>
                     
                     </div>
                 </div>
@@ -98,7 +99,7 @@ function Home(){
                 {/* about section */}
 
 
-                <section className='about containerr'>
+                <section id="about" className='about containerr'>
                     <h2 className='abouthead text-center'>We'll bring you a range of relevant, exciting opportunities so  <br/> you can find your next dream job.</h2>
 
                     <hr className='text-center hrtwo' />
@@ -118,7 +119,7 @@ function Home(){
 
                 {/* opening section */}
 
-                <section className='opening containerr'>
+                <section id="open" className='opening containerr'>
                 <h2 className='abouthead text-center'>Job Openings</h2>
 
                 <hr className='text-center hrtwo' />
@@ -209,38 +210,37 @@ function Home(){
 
 
                          <tbody className='tbody'>
-                             <tr>
-                                 <td colSpan={2}>
+                           
 
-                                     <a>Commercial Construction Superintendent</a>
-                                 </td>
-                                 <td>
-                                 Retail
-                                 </td>
-
-                                 <td>
-                                     <i className='fa fa-map-marker icons'></i><span className='ml-3'>Mason, OH, US</span>
-                                 </td>
-                             </tr>
-
-                             <tr>
-                                 <td colSpan={2}>
-
-                                     <a>Product Manager</a>
-                                 </td>
-                                 <td>
-                                 Retail
-                                 </td>
-
-                                 <td>
-                                     <i className='fa fa-map-marker icons'></i><span className='ml-3'>Mason, OH, US</span>
-                                 </td>
-                             </tr>
+                           
 
 
                              {jobs.map((job) => (
                                 <tr key={job.id}>
-                                    <td colSpan={2}>{job.title}</td>
+                                    <td colSpan={2}>
+                                        <Link style={{
+                                            color:"black",
+                                            fontWeight:"bold",
+                                        }} onClick={function(e){
+                                            e.preventDefault();
+
+                                              
+                                            navigate('/details',
+                                            {state:
+                                                {
+                                                    title:job.title,
+                                                    category:job.category,
+                                                    employment:job.employment,
+                                                    locationtype:job.locationtype,
+                                                    city:job.city,
+                                                    zipcode:job.zipcode,
+                                                    salary:job.salary,
+                                                    jobdescription:job.jobdescription
+                                                }
+                                            }
+                                            );
+                                        }}>{job.title}</Link>
+                                    </td>
                                 <td>{job.category}</td>
                                 <td><i className='fa fa-map-marker icons'></i><span className='ml-3'>{job.city}</span></td>
                                 {/* Add more table cells based on your job structure */}
@@ -262,7 +262,7 @@ function Home(){
 
                  {/* save section */}
 
-                 <section className='save'>
+                 <section id="match" className='save'>
                      <div className='savediv col-md-10 m-auto'>
                             <h2 className='savehead text-center'>Save time. We'll match you.</h2>
                             <hr className='text-center hrtwo' />
@@ -286,7 +286,7 @@ function Home(){
                  {/* alert section */}
 
 
-                 <section className='alert containerr'>
+                 <section className='alertt containerr'>
                  <div>
                     <h2 className='alerthead'>Know the instant your <br/> dream job is posted.</h2> 
 

@@ -8,7 +8,7 @@ import laboratory from './laboratory';
 import surgical from './surgical';
 import scan from './scan';
 import medication from './medication';
-import db from '../firebase';
+import {db , auth} from '../firebase';
 import { doc, setDoc, updateDoc } from "firebase/firestore"; 
 import { async } from '@firebase/util';
 import axios from 'axios';

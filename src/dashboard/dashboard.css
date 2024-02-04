@@ -15,17 +15,38 @@
     color:white;
 }
 .hoverme:hover{
-    background-color: #d4edda;
+    background-color: #8fb3d4;
     border-color: #c3e6cb;
-    color:#28a745;
+    color:#154470;
 }
 
 .activelink{
-    background-color: #d4edda;
+    background-color: #8fb3d4;
     border-color: #c3e6cb;
-    color:#28a745;
+    color:#154470;
 }
 
+.jobbutton{
+    background-color: #154470;
+    color:white;
+}
+
+.jobbutton:hover{
+    background-color: #154470;
+    color:white;
+}
+
+
+.tablehead{
+    background-color: #154470;
+    color:white;
+    font-size:13px;
+}
+
+th{
+    color:white!important;
+    font-size:13px !important;
+}
 .showcasetext{
     color:white;
     font-weight: bold;
