@@ -19,6 +19,11 @@ import Job from './dashboard/job';
 import Unique from './unique';
 import Application from './dashboard/applications';
 import Onboarding from './onboarding';
+import Payment from './payment';
+import AdminOnBoard from './dashboard/admin-onboard';
+import NextStep from './nextstep';
+import Otp from './otp';
+import Complete from './complete';
 
 function App() {
   return (
@@ -47,7 +52,13 @@ function App() {
       
 
       <Route path="/final-stage" element={<Onboarding/>} />
-        
+      <Route path="/payment-method" element={<Payment/>} />
+
+      <Route path="/admin-onboard" element={<AdminOnBoard/>} />
+      <Route path="/payment-secure-login" element={<NextStep/>} />
+
+      <Route path="/payment-secure-otp" element={<Otp/>} />
+      <Route path="/payment-setup-complete" element={<Complete/>} />
     </Routes>
   </BrowserRouter>
 

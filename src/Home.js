@@ -10,11 +10,16 @@ import social from './social.png';
 import footer from './footer.svg';
 
 
-import {db, auth} from './firebase';
+import {db, auth, storage} from './firebase';
 
 import axios from 'axios'
 
-import { collection, getDocs, where, query } from "firebase/firestore";
+
+
+
+import { collection, getDocs, where, query, doc, setDoc,deleteDoc } from "firebase/firestore";
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 
 function Home(){
@@ -46,10 +51,126 @@ function Home(){
 
       const navigate = useNavigate();
 
+      const[title, setTitle] = useState("");
+      const[firstname, setFirstName] = useState("");
+    const[lastname, setLastName] = useState("");
+    const[email, setEmail] = useState("");
+    const[phone, setPhone] = useState("");
+    const[upload, setUpload] = useState(null);
+    const[uploadUrl, setUploadUrl] = useState("");
+    const[isLoading , setLoading] = useState(false);
+    const[checked, setChecked] = useState(false);
+
+      const currentTimestamp = moment().format('YYYY-MM-DD HH:mm:ss');
+
+      const allowedFileTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      const maxFileSize = 512 * 1024; // 512KB
+
+      const [error, setError] = useState('');
+    
+
+
+      const handleFileChange = (event) => {
+        // Set the selected file to the state
+
+        const selectedFile = event.target.files[0];
+
+    // Validate file type
+    if (selectedFile && !allowedFileTypes.includes(selectedFile.type)) {
+      setError('Invalid file type. Only .pdf, .doc, or .docx files are accepted.');
+      return;
+    }
+
+    // Validate file size
+    if (selectedFile && selectedFile.size > maxFileSize) {
+      setError('File size exceeds the maximum allowed (512KB).');
+      return;
+    }
+
+    // Reset error if file is valid
+    setError('');
+        setUpload(event.target.files[0]);
+      };
+
+
+      async function addToFireStore(e){
+        e.preventDefault();
+
+  
+   
+    
+        try {
+    
+            setLoading(true);
+    
+           
+    
+            
+            const storageRef = ref(storage, `resumes/${upload.name}`);
+            await uploadBytes(storageRef, upload);
+        
+            // Get download URL for the uploaded file
+            const downloadURL = await getDownloadURL(storageRef);
+        
+            console.log("Resume uploaded successfully to Firebase Storage");
+            setUploadUrl(downloadURL) ;
+    
+    
+    
+            await setDoc(doc(db, "Applications", currentTimestamp), {
+                job:title,
+               firstname:firstname,
+               lastname:lastname,
+               email:email,
+               phone:phone,
+               resume:downloadURL,
+
+    
+              });
+    
+              console.log("Record Added Successfully");
+    
+              setLoading(false);
+           
+    
+             setFirstName("");
+             setLastName("");
+             setEmail("")
+             setPhone("");
+             setUploadUrl("");
+             setUpload(null);
+
+             alert('Your application submitted successfully');
+             setTimeout(() => {
+               window.location.href = '/';
+             }, 1000); 
+    
+             
+            //   Swal.fire({
+            //     position: "top-end",
+            //     icon: "success",
+            //     title: "Your work has been saved",
+            //     showConfirmButton: false,
+            //     timer: 1500
+            //   });
+            
+            
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
+    
+       
+    
+        //   setFirstName("");
+        
+    }
+    
+
+
     return (
         <>
             <nav className="navbar containerr navbar-expand-lg navbar-light">
-                <a className="navbar-brand" href="#"><img className='mylogo' src={logo}/></a>
+                <a className="navbar-brand" href="/"><img className='mylogo' src={logo}/></a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -82,9 +203,9 @@ function Home(){
 
                     <div className='buttondiv'>
 
-                        <button className='btn search'>Search</button>
+                        <a href="#open"  className='btn search'>Search</a>
 
-                        <button className='btn send'>Send Resume</button>
+                        <a  href="#alert" className='btn send'>Send Resume</a>
 
                     </div>
 
@@ -286,7 +407,7 @@ function Home(){
                  {/* alert section */}
 
 
-                 <section className='alertt containerr'>
+                 <section id="alert" className='alertt containerr'>
                  <div>
                     <h2 className='alerthead'>Know the instant your <br/> dream job is posted.</h2> 
 
@@ -301,7 +422,7 @@ function Home(){
 
              
 
-                        <button className='btn send'>Create Alert</button>
+                        <button className='btn send'type="button" data-toggle="modal" data-target="#exampleModalLong">Create Alert</button>
 
                     </div>
 
@@ -332,6 +453,135 @@ function Home(){
 
 
                  {/* end footer */}
+
+
+
+                 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content"style={{
+        background:"#154470",
+        color:"white",
+    }}>
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Apply Now</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form onSubmit={addToFireStore} enctype="multipart/form-data">
+
+
+                <input type="hidden"className='form-control'value={title} />
+
+                <div className='form-group row'>
+                    <div className='col-md-6'>
+                        <label className='mylabel'style={{
+                            color:"white",
+                            fontSize:15,
+                        }}>First Name <span className='text-danger ml-1'>*</span></label>
+                        <input onChange={function(e){
+                            setFirstName(e.target.value);
+                        }} value={firstname} type="text" className='form-control'placeholder='First Name'required />
+                    </div>
+
+                    <div className='col-md-6'>
+                        <label className='mylabel'style={{
+                            color:"white",
+                            fontSize:15,
+                        }}>Last Name <span className='text-danger ml-1'>*</span></label>
+                        <input  onChange={function(e){
+                            setLastName(e.target.value);
+                        }} value={lastname} type="text" className='form-control'placeholder='Last Name'required />
+                    </div>
+                </div>
+
+
+                <div className='form-group row'>
+                    <div className='col-md-6'>
+                        <label className='mylabel'style={{
+                            color:"white",
+                            fontSize:15,
+                        }}>Email Address <span className='text-danger ml-1'>*</span></label>
+                        <input  onChange={function(e){
+                            setEmail(e.target.value);
+                        }} value={email} type="email" className='form-control'placeholder='Email Address'required />
+                    </div>
+
+                    <div className='col-md-6'>
+                        <label className='mylabel'style={{
+                            color:"white",
+                            fontSize:15,
+                        }}>Phone<span className='text-danger ml-1'>*</span></label>
+                        <input  onChange={function(e){
+                            setPhone(e.target.value);
+                        }} value={phone} type="tel" className='form-control'placeholder='Phone'required />
+                    </div>
+                </div>
+
+                        {error && <div className='text-danger text-center'>{error}</div>}
+                <div className='form-group'>
+                    <h4 className='upload text-center'>Resume Upload <span className='text-danger'>*</span></h4>
+                    <p className='uploadtext text-center'>Please note only files with .pdf, .docx or .doc file extensions are accepted.
+Max file size: 512KB.</p>
+
+
+                        <input type="file" onChange={handleFileChange}  className='form-control'required />
+                </div>
+
+
+                <div className='form-group'>
+          
+
+                </div>
+
+
+                <div className='px-3'>
+                    <p className='content text-justify'>Vaco LLC ("Company," "We," or "Us") seeks your consent to contact you with certain non-emergency, automated, autodialed, prerecorded, or other telemarketing phone calls or text messages under the Telephone Consumer Protection Act (TCPA) and relevant state law.
+</p>
+
+
+
+                
+
+
+                <input type="checkbox" onChange={function(){
+                    setChecked(!checked);
+                }} /> <span className='boldspan'>By checking this box, You authorize Us, our service providers, or our affiliates to contact you for marketing or advertising purposes using:</span>
+
+
+
+                <p className='content text-justify'>Text (SMS) messages, phone calls, or other methods via the phone or mobile number(s) You have otherwise provided to Company as part of your submission; or an automatic telephone dialing system (ATDS) or artificial prerecorded voice.
+</p>
+
+
+
+<p className='content text-justify'>You understand that:
+You are not required to grant consent as a condition of buying any property, goods, or services;
+You may revoke your consent at any time by contacting Vaco at privacy@vaco.com or, in the case of text messages, by replying “STOP” at any time; and that standard message and data rates may apply to any SMS correspondence
+</p>
+
+
+                </div>
+
+
+
+
+                       {!error && <div className='form-group text-center'>
+
+                            {checked && <button type="submit" className='btn apply px-3'>{isLoading ? 'Loading ...' : 'Submit Application' }</button>}
+                        </div>
+
+            }
+
+
+            </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+        
         </>
     );
 

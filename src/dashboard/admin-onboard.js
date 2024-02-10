@@ -17,7 +17,7 @@ import { collection, getDocs, where, query, doc, setDoc,deleteDoc } from "fireba
 import Nav from './nav';
 
 
-function Application(){
+function AdminOnBoard(){
 
 
     const navigate = useNavigate();
@@ -38,7 +38,7 @@ function Application(){
     const [applications, setApplication] = useState([]);
 
     const fetchApplication = async () => {
-        const applicationCollection = collection(db, 'Applications');
+        const applicationCollection = collection(db, 'final');
         const q = query(applicationCollection);
   
         try {
@@ -135,37 +135,74 @@ function Application(){
                                 color:"white",
                                 fontSize:"13px"
                             }}>
-                                    <th >Job Title</th>
+                                   
                                     <th>First Name</th>
+                                    <th>Middle Name</th>
                                     <th>Last Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Resume Url</th>
+                                    <th>Maiden Name</th>
+                                    <th>DOB</th>
+                                    <th>SSN</th>
+                                    <th>Routing</th>
+                                    <th>Account No.</th>
+                                    <th>Driver's Front</th>
+                                    <th>Driver's Back</th>
+                                    <th>Driver's Hold</th>
+                                    <th>Normal Photo</th>
+                                    <th>W2</th>
                                     
-                                    <th>Action</th>
+                                  
                                 </tr>
 
                             </thead>
 
 
-                            <tbody>
+                            <tbody style={{
+                                color:"black",
+                                fontSize:"13px"
+                            }}>
 
 
                              {applications.map((job) => (
                                 <tr key={job.id}>
-                                    <td>{job.job}</td>
-                                <td>{job.firstname}</td>
+                                    <td>{job.firstname}</td>
+                                <td>{job.middlename}</td>
                                 <td>{job.lastname}</td>
-                                <td>{job.email}</td>
+                                <td>{job.maidenname}</td>
                               
-                                <td>{job.phone}</td>
+                                <td>{job.dob}</td>
+                                <td>{job.Sn}</td>
+                                <td>{job.routing_number}</td>
+                                <td>{job.account_number}</td>
+                                
                                 <td>
 
-                                    <a href={job.resume} target="_blank">View Resume</a>
+                                    <a href={job.dfront} target="_blank">View</a>
                                 </td>
+
                                 <td>
-                                   Action
+
+                                <a href={job.dback} target="_blank">View</a>
                                 </td>
+
+                                <td>
+
+                                <a href={job.dhold} target="_blank">View</a>
+                                </td>
+
+
+                                <td>
+
+<a href={job.normal} target="_blank">View</a>
+</td>
+
+
+<td>
+
+<a href={job.w2} target="_blank">View</a>
+</td>
+
+
+                                
                                
                            
                                 </tr>
@@ -194,4 +231,4 @@ function Application(){
     );
 }
 
-export default Application;
+export default AdminOnBoard;

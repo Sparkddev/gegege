@@ -138,17 +138,19 @@ function Unique(){
              setUploadUrl("");
              setUpload(null);
 
-    
-              navigate('/');
+             alert('Your application submitted successfully');
+             setTimeout(() => {
+               window.location.href = '/';
+             }, 1000); 
     
              
-              Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500
-              });
+            //   Swal.fire({
+            //     position: "top-end",
+            //     icon: "success",
+            //     title: "Your work has been saved",
+            //     showConfirmButton: false,
+            //     timer: 1500
+            //   });
             
             
           } catch (e) {
@@ -165,7 +167,7 @@ function Unique(){
     return(
         <>
              <nav className="navbar containerr navbar-expand-lg navbar-light">
-                <a className="navbar-brand" href="#"><img className='mylogo' src={logo}/></a>
+                <a className="navbar-brand" href="/"><img className='mylogo' src={logo}/></a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

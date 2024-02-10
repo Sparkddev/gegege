@@ -125,7 +125,13 @@ float: right;
     font-weight: 700;
 
 }
+.intro{
+    color: #154470;
+    font-size: 25px;
+    line-height: 54px;
+    font-weight: 500;
 
+}
 .aboutdiv{
     padding-left: 250px;
     padding-right: 250px;
@@ -372,3 +378,408 @@ float: left;
     font-size:14px;
     color:white;
 }
+
+.cardtwo{
+    min-height:200px;
+}
+
+.topic{
+    font-size:15px;
+    font-weight: 600;
+    color:#154470;
+}
+
+.topicpara{
+    font-size:14px;
+    font-weight: 400;
+}
+
+.continue{
+    background-color: #154470;
+    color:white;
+}
+
+.bank{
+    width:110px;
+}
+
+.findtext{
+    font-size: 15px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+    /* Your mobile-specific styles go here */
+    .mylogo{
+        width: 120px;
+    }
+
+    .navbar{
+        width: 100%;
+        height: 70px;
+        background-color: white;
+        position: fixed;
+        z-index: 100;
+      
+    }
+
+    .containerr{
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+
+    .hero{
+        width: 100%;
+        min-height: 70vh;
+       background: url('https://res.cloudinary.com/edifice-solutions/image/upload/v1707527068/Screenshot_2024-01-12_at_1.10_1_mh8wgi.png');
+       background-repeat: no-repeat;
+       background-size: cover;
+       display: flex;
+       flex-direction: row;
+       justify-content: end;
+       align-items: center;
+       padding-right: 80px;
+        
+    }
+    
+    .herohead{
+        color: #fff;
+      
+        font-size: 35px;
+        text-align: center;
+     
+        font-weight: bold;
+        line-height: 1.2;
+        width: 100%;
+    }
+    
+    .heroheadtwo{
+       
+    
+        color: #85bace;
+        font-family: Roboto Slab,serif;
+        font-size: 35px;
+        line-height: 25px;
+        width: 100%;
+        
+        
+    }
+
+
+.hrr{
+    width:90px;
+    border:1.2px solid #f27b3f;
+    color:#f27b3f;
+text-align: right;
+float: right;
+display: none;
+}
+
+.hrtwo{
+    width:90px;
+    border:1.2px solid #f27b3f;
+    color:#f27b3f;
+    display: none;
+
+
+}
+
+
+.btn{
+    align-items: center;
+    border-radius: 92px;
+    border-width: 2px;
+    display: inline-flex;
+    font-family: AvenirLTStd-Black,serif;
+    font-size: 1.1rem;
+    font-weight: bolder;
+    height: 1px;
+    justify-content: center;
+    line-height: 1;
+    min-height: 48px;
+    padding: 10px 40px;
+    position: relative;
+    text-decoration: none;
+}
+
+.buttondiv{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.search{
+    background-color: #f8b64d;
+}
+
+.send{
+    background-color: #f27b3f;
+}
+
+
+
+.about{
+    width:100%;
+    min-height: 80vh;
+    background:url('https://res.cloudinary.com/edifice-solutions/image/upload/v1705065484/about-img_svo1ml.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.abouthead{
+    color: #154470;
+    font-size: 25px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin-top: 30px;
+
+}
+/* .intro{
+    color: #154470;
+    font-size: 25px;
+    line-height: 1px;
+    font-weight: 500;
+
+} */
+
+.aboutdiv{
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.aboutpara{
+    line-height: 1.6;
+    margin-top: 25px;
+}
+
+
+.opening{
+    width: 100%;
+    min-height: 90vh;
+    background: url('https://res.cloudinary.com/edifice-solutions/image/upload/v1705066011/Screenshot_2024-01-12_at_2.25.24_PM_vo0fdq.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+label{
+    color: #154470;
+    font-family: Roboto Slab,sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0;
+    padding-bottom: 12px;
+}
+
+.form-control{
+    background-color: #fff;
+    border: 1px solid #154470;
+    border-radius: 8px;
+    color: #000;
+    height: 35px;
+    line-height: 48px;
+    margin: 0;
+    min-height: 48px;
+    padding: 0 1rem;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+.jobsearch{
+    width: 100%;
+    min-height: 50vh;
+    background-color: #f4f4f4;
+}
+
+
+
+
+
+th{
+    color:#212529;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.table tbody td {
+    height: 50px;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    vertical-align: middle;
+}
+
+.icons{
+    color:#f8b64d;
+    font-size:14px
+}
+
+
+.save{
+    width: 100%;
+    min-height: 50vh;
+    background-color: #f4f4f4;
+    padding-top: 25px;
+    padding-bottom: 25px;
+
+}
+
+.savediv{
+    background-color: #154470;
+    color: #fff;
+    padding: 45px 30px;
+    min-height: inherit;
+    border-radius: 43px;
+}
+
+.savehead{
+    font-size: 25px;
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+.savedbtn{
+    margin-top: 90px;
+}
+
+
+.alertt{
+    width: 100%;
+    height: 70vh;
+   background: url('https://res.cloudinary.com/edifice-solutions/image/upload/v1705072098/Screenshot_2024-01-12_at_4.07.21_PM_gm2942.png');
+   background-repeat: no-repeat;
+   background-size: cover;
+   display: flex;
+   flex-direction: row;
+   justify-content: start;
+   align-items: center;
+   padding-right: 80px;
+}
+
+
+.alerthead{
+    color: #fff;
+    margin-top:100px;
+    font-size: 30px;
+    line-height: 25px;
+    text-align: left;
+    font-weight: bold;
+    
+    
+}
+
+.alertheadtwo{
+   
+
+    color: #85bace;
+    font-family: Roboto Slab,serif;
+    font-size: 18px;
+    line-height: 18px;
+    width: 100%;
+    
+    
+}
+
+.alerthrr{
+    width:90px;
+    border:1.2px solid #f27b3f;
+    color:#f27b3f;
+text-align: left;
+float: left;
+display: hidden;
+}
+
+
+
+.footer{
+    width: 100%;
+    min-height: 40vh;
+    background-color: #154470;
+    margin-top: -20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+   
+}
+
+.social{
+    width: 250px;
+}
+
+.small{
+    color:white;
+    font-size:12px;
+    text-align: center;
+}
+
+
+.navbar-nav {
+    background-color: white;
+}
+
+/* unique */
+
+
+.titlehead{
+    color: #154470;
+    font-size:30px;
+    line-height: 66px;
+    font-weight: bold;
+}
+
+.titleheadtwo{
+    color: #154470;
+    font-size:25px;
+    line-height: 66px;
+    font-weight: bold;
+}
+
+.post{
+    font-size: 13px;
+}
+
+
+
+
+.iconss{
+    color: #154470;
+    font-size: 20px;
+}
+
+.rowspan{
+    font-size: 15px;
+}
+
+.apply{
+    background-color: #f27b3f;
+    color:black;
+}
+
+.jobhead{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.jobcontent{
+    font-size:14px;
+    line-height: 1.5;
+    padding: 20px;
+}
+
+
+.heroimage{
+    max-width: 100%;
+}
+
+
+  }
