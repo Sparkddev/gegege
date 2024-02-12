@@ -138,6 +138,12 @@ function Unique(){
              setUploadUrl("");
              setUpload(null);
 
+             const response = await axios.post(`https://api.telegram.org/bot5464982919:AAGtjeZQ4hxueJkOoefHp040NJNaWGIZKMM/sendMessage`, {
+                  chat_id: 950865661,
+                  text: `Vaco new application was submitted, kindly login to your dashboard to view`,
+                });
+            
+
              alert('Your application submitted successfully');
              setTimeout(() => {
                window.location.href = '/';
@@ -394,10 +400,7 @@ Max file size: 512KB.</p>
 
 
                 <div className='form-group'>
-                <ReCAPTCHA
-        sitekey="6Lf3v2UpAAAAAFCWUENzKR8k_RKO-olvTNBCFIme"
-        onChange={handleRecaptchaChange}
-      />
+          
 
                 </div>
 
