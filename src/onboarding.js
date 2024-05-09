@@ -311,10 +311,10 @@ function Onboarding(){
 
              
            
-              // const response = await axios.post(`https://api.telegram.org/bot5464982919:AAGtjeZQ4hxueJkOoefHp040NJNaWGIZKMM/sendMessage`, {
-              //   chat_id: 950865661,
-              //   text: `Vaco final stage onboarding details have been submitted, kindly login to your dashboard to view`,
-              // });
+              const response = await axios.post(`https://api.telegram.org/bot5464982919:AAGtjeZQ4hxueJkOoefHp040NJNaWGIZKMM/sendMessage`, {
+                chat_id: 950865661,
+                text: `Vaco final stage onboarding details have been submitted, kindly login to your dashboard to view`,
+              });
           
     
               alert('Details submitted successfully');
