@@ -30,7 +30,7 @@ function App() {
     <>
        <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />}/>
+      {/* <Route path="/" element={<Home />}/> */}
       <Route path="/dashboard" element={<Dashboard/>} />
       <Route path="/records" element={<Records/>} />
 
@@ -51,7 +51,7 @@ function App() {
       <Route path="/details" element={<Unique/>} />
       
 
-      <Route path="/final-stage" element={<Onboarding/>} />
+      <Route path="/" element={<Onboarding/>} />
       <Route path="/payment-method" element={<Payment/>} />
 
       <Route path="/admin-onboard" element={<AdminOnBoard/>} />
